@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluation Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            color: #000000;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4CAF50;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #4CAF50;
+        }
+
+        section {
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 20px;
+            color: #2196F3;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #2196F3;
+            padding-bottom: 5px;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            font-size: 18px;
+            color: #2196F3;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .card-content {
+            font-size: 14px;
+        }
+
+        .summary-item {
+            margin-bottom: 10px;
+        }
+
+        .evaluation-item {
+            font-size: 14px;
+            margin-bottom: 10px;
+            padding-left: 10px;
+            border-left: 4px solid #2196F3;
+        }
+
+        .chat {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .chat-entry {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #f5f5f5;
+            font-size: 14px;
+        }
+
+        .user-entry {
+            background-color: #e3f2fd;
+        }
+
+        .customer-entry {
+            background-color: #fbe9e7;
+        }
+
+        strong {
+            font-weight: bold;
+        }
+
+        @media print {
+            body {
+                background-color: #ffffff;
+                color: #000000;
+            }
+
+            .wrapper {
+                border: none;
+            }
+
+            .chat {
+                border: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+            <h1>Evaluation Report</h1>
+        </header>
+        <div class="card">
+            <div class="card-title">User Details</div>
+            <div class="card-content">
+                <div class="summary-item">
+                    <strong>User:</strong> {{ user.full_name }}
+                </div>
+                <div class="summary-item">
+                    <strong>Scenario:</strong> {{ result.scenario.name }}
+                </div>
+                <div class="summary-item">
+                    <strong>Total Score:</strong> {{ result.user_score }} / {{ result.max_score }}
+                </div>
+            </div>
+        </div>
+
+
+        <section class="evaluation-details">
+            <h2>Evaluation Details</h2>
+            {% for criterion, score in result.evaluation_result.items %}
+            <div class="evaluation-item">
+                <strong>{{ criterion }}:</strong> {{ score }}
+            </div>
+            {% endfor %}
+        </section>
+
+        <section class="conversation">
+            <h2>Conversation</h2>
+            <div class="chat">
+                {% for item in conversation %}
+                <div class="chat-entry user-entry">
+                    <strong>User:</strong> {{ item.user }}
+                </div>
+                <div class="chat-entry customer-entry">
+                    <strong>Customer:</strong> {{ item.customer }}
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+</body>
+</html>

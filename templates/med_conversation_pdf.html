@@ -1,0 +1,150 @@
+<!-- conversation_pdf.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Medscribe Response PDF</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        h1 { 
+            color: #2a2a2a;
+            margin-bottom: 20px;
+        }
+        h2 { 
+            color: #2a2a2a; 
+            border-bottom: 1px solid #ccc;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+        }
+        p {
+            margin-bottom: 10px;
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        th, td { 
+            border: 1px solid #ccc; 
+            padding: 8px; 
+            text-align: left; 
+        }
+        ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1><strong> {{ conversation.file_name }}</strong></h1>
+    <h2>Basic Systems</h2>
+    <p><strong>Summary:</strong> {{ conversation.summary }}</p>
+    <p><strong>Chief Complaint:</strong> {{ conversation.chief_complaint }}</p>
+    <p><strong>Follow Up:</strong> {{ conversation.follow_up }}</p>
+    <p><strong>Diagnosis:</strong> {{ conversation.diagnosis }}</p>
+    <p><strong>Education:</strong> {{ conversation.education }}</p>
+    <p><strong>Allergy:</strong> {{ conversation.allergy }}</p>
+
+    {% if history %}
+        <h2>History of Present Illness</h2>
+        <table>
+            <tr>
+                <th style="width: 30%;">Field</th>
+                <th>Details</th>
+            </tr>
+            <tr><td>Symptoms</td><td>{{ history.symptoms }}</td></tr>
+            <tr><td>Location</td><td>{{ history.location }}</td></tr>
+            <tr><td>Quality</td><td>{{ history.quality }}</td></tr>
+            <tr><td>Severity</td><td>{{ history.severity }}</td></tr>
+            <tr><td>Duration</td><td>{{ history.duration }}</td></tr>
+            <tr><td>Timing</td><td>{{ history.timing }}</td></tr>
+            <tr><td>Context</td><td>{{ history.context }}</td></tr>
+            <tr><td>Modifying Factors</td><td>{{ history.modifying_factors }}</td></tr>
+            <tr><td>Associated Symptoms</td><td>{{ history.associated_symptoms }}</td></tr>
+        </table>
+    {% endif %}
+
+    {% if review %}
+        <h2>Review of Systems</h2>
+        <table>
+            <tr>
+                <th>System</th><th>Details</th>
+            </tr>
+            <tr><td>Constitutional</td><td>{{ review.constitutional }}</td></tr>
+            <tr><td>Eyes</td><td>{{ review.eyes }}</td></tr>
+            <tr><td>ENT</td><td>{{ review.ent }}</td></tr>
+            <tr><td>Respiratory</td><td>{{ review.respiratory }}</td></tr>
+            <tr><td>Endocrine</td><td>{{ review.endocrine }}</td></tr>
+            <tr><td>Cardiovascular</td><td>{{ review.cardiovascular }}</td></tr>
+            <tr><td>Gastrointestinal</td><td>{{ review.gastrointestinal }}</td></tr>
+            <tr><td>Hematologic/Lymphatic</td><td>{{ review.hem_or_lymphatic }}</td></tr>
+            <tr><td>Genitourinary</td><td>{{ review.genitourinary }}</td></tr>
+            <tr><td>Musculoskeletal</td><td>{{ review.musculoskeletal }}</td></tr>
+            <tr><td>Skin</td><td>{{ review.skin }}</td></tr>
+            <tr><td>Neurologic</td><td>{{ review.neuro }}</td></tr>
+            <tr><td>Psychiatric</td><td>{{ review.psychiatric }}</td></tr>
+            <tr><td>Allergy/Immunological</td><td>{{ review.allergy_or_immunological }}</td></tr>
+            <tr><td>Others</td><td>{{ review.others }}</td></tr>
+        </table>
+    {% endif %}
+
+    {% if mdm %}
+        <h2>Medical Decision Making (MDM)</h2>
+        <table>
+            <tr>
+                <th style="width: 30%;">Field</th>
+                <th>Details</th>
+            </tr>
+            <tr>
+                <td>Services Ordered</td>
+                <td>{{ mdm.services_ordered_description }}</td>
+            </tr>
+            <tr>
+                <td>Surgery Planned</td>
+                <td>{{ mdm.surgery_planned }}</td>
+            </tr>
+            <tr>
+                <td>CPT Codes</td>
+                <td>
+                    <ul style="margin: 0; padding-left: 20px;">
+                        {% for code in mdm.cpt_codes %}
+                        <li>{{ code }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>HCPCS Codes</td>
+                <td>
+                    <ul style="margin: 0; padding-left: 20px;">
+                        {% for code in mdm.hcpcs_codes %}
+                        <li>{{ code }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    {% endif %}
+
+    {% if icds %}
+        <h2>Relevant ICD Codes</h2>
+        <table>
+            <tr><th>Code</th><th>Short Description</th><th>Long Description</th><th>NF Excl</th></tr>
+            {% for icd in icds %}
+            <tr>
+                <td>{{ icd.code }}</td>
+                <td>{{ icd.short_description }}</td>
+                <td>{{ icd.long_description }}</td>
+                <td>{{ icd.nf_excl }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+</body>
+</html>
