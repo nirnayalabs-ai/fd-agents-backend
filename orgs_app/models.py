@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils.text import slugify
 from helper.models import UUIDPrimaryKey, IsActiveModel, TimeLine
 from accounts_app.models import User
 from .managers import OrganizationScopedManager
@@ -50,3 +49,23 @@ class OrganizationMember(UUIDPrimaryKey, IsActiveModel, TimeLine, OrganizationFi
 
     def __str__(self):
         return f"{self.user.email} → {self.org.name} ({self.role})"
+
+
+class LLMProvider(UUIDPrimaryKey, IsActiveModel, TimeLine):
+    name = models.CharField(max_length=150, unique=True)
+
+
+class LLMModel(UUIDPrimaryKey, IsActiveModel, TimeLine):
+    provider = models.ForeignKey(LLMProvider, on_delete=models.CASCADE)
+    model_key = models.CharField(max_length=100)
+    display_name = models.CharField(max_length=150)
+    context_length = models.IntegerField(null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        unique_together = ("provider", "model_key")
+
+
+class OrganizationLLMConfig(UUIDPrimaryKey, IsActiveModel, TimeLine, OrganizationFieldMixin):
+    provider = models.ForeignKey(LLMProvider, on_delete=models.CASCADE, related_name="orgs")
+    api_key = models.TextField()
